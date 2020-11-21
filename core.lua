@@ -8,22 +8,22 @@ local function addBuffLine(self, func, unit, index, filter)
 	if srcUnit then
 		self:AddLine("|cffff0000 --")
 		self:AddDoubleLine("|cffff0000Номер:", "|cffff0000"..id)
-		
+
 		local src = GetUnitName(srcUnit, true)
-		
+
 		if srcUnit == "pet" or srcUnit == "vehicle" then
 			src = format("%s (%s)", src, GetUnitName("player", true))
 		else
 			local partypet = srcUnit:match("^partypet(%d+)$")
 			local raidpet = srcUnit:match("^raidpet(%d+)$")
-			
+
 			if partypet then
 				src = format("%s (%s)", src, GetUnitName("party"..partypet, true))
 			elseif raidpet then
 				src = format("%s (%s)", src, GetUnitName("raid"..raidpet, true))
 			end
 		end
-		
+
 		self:AddDoubleLine("|cffff0000Наложивший:", "|cffff0000" ..src)
 		self:Show()
 	end
@@ -40,50 +40,50 @@ local function addSpellLine(self, id)
 end
 
 GameTooltip:HookScript("OnTooltipSetUnit", function(self)
-	if C_PetBattles.IsInBattle() then 
-		return 
+	if C_PetBattles.IsInBattle() then
+		return
 	end
-	
+
 	local unit = select(2, self:GetUnit())
-	
+
 	if unit then
         local guid = UnitGUID(unit) or ""
         local id = tonumber(guid:match("-(%d+)-%x+$"), 10)
-		
-		if id and guid:match("%a+") ~= "Player" then 
-			addItemLine(GameTooltip, id) 
+
+		if id and guid:match("%a+") ~= "Player" then
+			addItemLine(GameTooltip, id)
 		end
     end
 end)
 
 GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 	local id = select(3, self:GetSpell())
-	
-	if id then 
-		addSpellLine(self, id) 
+
+	if id then
+		addSpellLine(self, id)
 	end
 end)
 
 hooksecurefunc("SetItemRef", function(link, ...)
 	local id = tonumber(link:match("spell:(%d+)"))
-	
-	if id then 
-		addSpellLine(ItemRefTooltip, id) 
+
+	if id then
+		addSpellLine(ItemRefTooltip, id)
 	end
 end)
 
-hooksecurefunc("SetItemRef", function(link, ...) 
-	local id = tonumber(link:match("quest:(%d+)")) 
-	
-	if (id) then   
+hooksecurefunc("SetItemRef", function(link, ...)
+	local id = tonumber(link:match("quest:(%d+)"))
+
+	if (id) then
 		ItemRefTooltip:AddDoubleLine("|cffff0000Номер:","|cffff0000"..id)
 		ItemRefTooltip:Show();
    end
 end)
 
-hooksecurefunc("SetItemRef", function(link, ...) 
-	local id = tonumber(link:match("achievement:(%d+)")) 
-	
+hooksecurefunc("SetItemRef", function(link, ...)
+	local id = tonumber(link:match("achievement:(%d+)"))
+
 	if (id) then
 		ItemRefTooltip:AddDoubleLine("|cffff0000Номер:","|cffff0000"..id)
 		ItemRefTooltip:Show();
@@ -92,15 +92,15 @@ end)
 
 local function attachItemTooltip(self)
 	local link = select(2, self:GetItem())
-	
-	if not link then 
-		return 
+
+	if not link then
+		return
 	end
-	
+
 	local id = select(3,strfind(link, "^|%x+|Hitem:(%-?%d+):(%d+):(%d+):(%d+):(%d+):(%d+):(%-?%d+):(%-?%d+)"))
-	
-	if id then 
-		addItemLine(self, id) 
+
+	if id then
+		addItemLine(self, id)
 	end
 end
 
