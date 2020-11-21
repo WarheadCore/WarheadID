@@ -1,0 +1,6 @@
+## Interface: 50200
+## Title: |cff6C8CD5Warhead ID
+## Version: 1.0
+## Notes: Показывает все айди на спеллах/кв/ачтивках/предметах + того, кто наложил бафф
+## Author: |cffff0000Winfidonarleyan
+core.lua
