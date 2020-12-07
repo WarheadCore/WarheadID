@@ -5,10 +5,13 @@ local function addBuffLine(self, func, unit, index, filter)
 	local srcUnit = select(8, func(unit, index, filter))
 	local id = select(11, func(unit, index, filter))
 
-	if srcUnit then
-		self:AddLine("|cffff0000 --")
+	self:AddLine("|cffff0000 --")
+	
+	if (id) then
 		self:AddDoubleLine("|cffff0000Номер:", "|cffff0000"..id)
+	end
 
+	if srcUnit then
 		local src = GetUnitName(srcUnit, true)
 
 		if srcUnit == "pet" or srcUnit == "vehicle" then
@@ -25,8 +28,11 @@ local function addBuffLine(self, func, unit, index, filter)
 		end
 
 		self:AddDoubleLine("|cffff0000Наложивший:", "|cffff0000" ..src)
-		self:Show()
+	else
+		self:AddDoubleLine("|cffff0000Наложивший:", "|cffff0000 --")
 	end
+	
+	self:Show()
 end
 
 local function addItemLine(self, id)
